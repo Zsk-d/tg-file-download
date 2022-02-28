@@ -1,4 +1,5 @@
 # tg-file-download
+![avatar](https://raw.githubusercontent.com/Zsk-d/tg-file-download/main/tg-file-download-sc.PNG)
 # 依赖:
 pyrogram
 # 运行:

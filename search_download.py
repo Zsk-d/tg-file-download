@@ -19,6 +19,7 @@ def parse_search_res(res):
             "fileId":msg[msg.media].file_id,
             "fileSize":file_size_str,
             "date":str(datetime.datetime.fromtimestamp(msg[msg.media].date)),
+            "total":msg[msg.media].file_size,
         }
         file_list.append(item)
         res_str += "   {}. [{}] {}Mb {}\n".format(index,item["filename"],item["fileSize"],item["date"])
@@ -37,24 +38,24 @@ while True:
         if file_list:
             print(res_str)
             while True:
-                try:
-                    select_number = int(input()) - 1
-                    if select_number < 0: break
-                    else:
-                        file = file_list[select_number]
-                        print("---< 开始下载 {} >---".format(file["filename"]))
-                        while True:
-                            res = tf.download_file(app,file["fileId"],"dl/" + file["filename"])
-                            if res:
-                                print("---< 文件已下载到 {} >---".format(res))
-                                break
-                            else:
-                                print("---< 文件下载失败,重试? y/n")
-                                res = input()
-                                if res == "y": continue
-                                else: break
-                        break
-                except:
-                    print("输入数字")
+                # try:
+                select_number = int(input()) - 1
+                if select_number < 0: break
+                else:
+                    file = file_list[select_number]
+                    print("---< 开始下载 {} >---".format(file["filename"]))
+                    while True:
+                        res = tf.download_file(app,file["fileId"],"dl/" + file["filename"],file["total"])
+                        if res:
+                            print("---< 文件已下载到 {} >---".format(res))
+                            break
+                        else:
+                            print("---< 文件下载失败,重试? y/n")
+                            res = input()
+                            if res == "y": continue
+                            else: break
+                    break
+                # except:
+                #     print("输入数字")
         else:
             print("---< '" + keyword + "' 相关文件未找到 >---")
